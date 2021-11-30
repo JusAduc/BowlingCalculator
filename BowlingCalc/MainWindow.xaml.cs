@@ -20,6 +20,7 @@ namespace idk_what_this_is
     /// </summary>
     public partial class MainWindow : Window
     {
+        //Global Vars
         double gameOneScore;
         double gameTwoScore;
         double gameThreeScore;
@@ -30,7 +31,8 @@ namespace idk_what_this_is
             InitializeComponent();
 
         }
-
+        // I wish I knew a better way to do this but whatever
+        #region Radio Buttons
         private void Male_Checked(object sender, RoutedEventArgs e)
         {
             Gender = "Male";
@@ -45,9 +47,11 @@ namespace idk_what_this_is
         {
             Gender = "Other";
         }
+        #endregion
 
         private void Calculate(object sender, RoutedEventArgs e)
         {
+            //Code so if theres no input, it doesnt crash + Message Box for the error
             if (GameOne.Text == "" || GameTwo.Text == "" || GameThree.Text == "")
             {
                 MessageBox.Show("You must input each game score...");
@@ -60,7 +64,7 @@ namespace idk_what_this_is
                 double AverageScore = (gameOneScore + gameTwoScore + gameThreeScore) / 3;
                 double HandicapScore = (200 - AverageScore) * .8;
 
-
+                FindHigh();
                 User_Name = String.Format(UserInput.Text);
                 UserGender.Text = Gender;
                 UserName.Text = User_Name;
@@ -71,6 +75,7 @@ namespace idk_what_this_is
 
         private void Clear(object sender, RoutedEventArgs e)
         {
+            //Resest all information
             gameOneScore = 0;
             gameTwoScore = 0;
             gameThreeScore = 0;
@@ -84,11 +89,23 @@ namespace idk_what_this_is
             GameTwo.Text = "";
             GameThree.Text = "";
             Handicap.Text = "";
+            TopGame.Text = "";
         }
 
         private void ExitBtn(object sender, RoutedEventArgs e)
         {
+            //Just Closes Program
             Close();
         }
+        
+        public void FindHigh()
+        {
+            gameOneScore = Double.Parse(GameOne.Text);
+            gameTwoScore = Double.Parse(GameTwo.Text);
+            gameThreeScore = Double.Parse(GameThree.Text);
+
+            if (gameOneScore > gameTwoScore && gameOneScore > gameThreeScore) {TopGame.Text = "Game One!";} else if (gameTwoScore > gameOneScore && gameTwoScore > gameThreeScore) { TopGame.Text = "Game Two!"; } else if (gameThreeScore > gameOneScore && gameThreeScore > gameTwoScore) { TopGame.Text = "Game Three!"; } else { TopGame.Text = "It's a tie!"; }
+        }
+
     }
 }
