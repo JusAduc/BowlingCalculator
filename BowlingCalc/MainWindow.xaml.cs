@@ -28,6 +28,8 @@ namespace idk_what_this_is
         string Gender;
         string User_Name;
         double AverageScore;
+        double handicapScore;
+        string topScoreGame;
         public MainWindow()
         {
             InitializeComponent();
@@ -63,15 +65,15 @@ namespace idk_what_this_is
                 gameOneScore = Double.Parse(GameOne.Text);
                 gameTwoScore = Double.Parse(GameTwo.Text);
                 gameThreeScore = Double.Parse(GameThree.Text);
-                double AverageScore = (gameOneScore + gameTwoScore + gameThreeScore) / 3;
-                double HandicapScore = (200 - AverageScore) * .8;
+                AverageScore = (gameOneScore + gameTwoScore + gameThreeScore) / 3;
+                handicapScore = (200 - AverageScore) * .8;
 
                 FindHigh();
                 User_Name = String.Format(UserInput.Text);
                 UserGender.Text = Gender;
                 UserName.Text = User_Name;
                 UserAverageScore.Text = AverageScore.ToString();
-                Handicap.Text = HandicapScore.ToString(); 
+                Handicap.Text = handicapScore.ToString(); 
                 textFile();
             }
         }
@@ -104,18 +106,13 @@ namespace idk_what_this_is
         
         public void FindHigh()
         {
-            gameOneScore = Double.Parse(GameOne.Text);
-            gameTwoScore = Double.Parse(GameTwo.Text);
-            gameThreeScore = Double.Parse(GameThree.Text);
-
-            if (gameOneScore > gameTwoScore && gameOneScore > gameThreeScore) {TopGame.Text = "Game One!";} else if (gameTwoScore > gameOneScore && gameTwoScore > gameThreeScore) { TopGame.Text = "Game Two!"; } else if (gameThreeScore > gameOneScore && gameThreeScore > gameTwoScore) { TopGame.Text = "Game Three!"; } else { TopGame.Text = "It's a tie!"; }
+            if (gameOneScore > gameTwoScore && gameOneScore > gameThreeScore) { topScoreGame = "Game One!"; TopGame.Text = topScoreGame;} else if (gameTwoScore > gameOneScore && gameTwoScore > gameThreeScore) { topScoreGame = "Game Two!"; TopGame.Text = topScoreGame; } else if (gameThreeScore > gameOneScore && gameThreeScore > gameTwoScore) { topScoreGame = "Game Three!"; TopGame.Text = topScoreGame; } else { TopGame.Text = "It's a tie!"; }
         }
 
 
         public void textFile()
         {
-            // Fix average score, handicap and add a top score (find new way to do a FindHigh).
-            string playerInfo = $"Your name is {User_Name}. Your average score was {AverageScore.ToString()}. Your gender is {Gender}. The handicap you got is {Handicap}.";
+            string playerInfo = $"Your name is {User_Name}. Your average score was {AverageScore.ToString()}. Your gender is {Gender}. The handicap you got is {handicapScore}. Your top scoring game was {topScoreGame}";
             File.WriteAllText("Scores.txt", playerInfo);
         }
     }
