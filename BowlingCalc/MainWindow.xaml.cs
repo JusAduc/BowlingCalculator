@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.IO;
 
 namespace idk_what_this_is
 {
@@ -26,6 +27,7 @@ namespace idk_what_this_is
         double gameThreeScore;
         string Gender;
         string User_Name;
+        double AverageScore;
         public MainWindow()
         {
             InitializeComponent();
@@ -69,10 +71,11 @@ namespace idk_what_this_is
                 UserGender.Text = Gender;
                 UserName.Text = User_Name;
                 UserAverageScore.Text = AverageScore.ToString();
-                Handicap.Text = HandicapScore.ToString();
+                Handicap.Text = HandicapScore.ToString(); 
+                textFile();
             }
         }
-
+        #region ClearBtn
         private void Clear(object sender, RoutedEventArgs e)
         {
             //Resest all information
@@ -91,6 +94,7 @@ namespace idk_what_this_is
             Handicap.Text = "";
             TopGame.Text = "";
         }
+        #endregion
 
         private void ExitBtn(object sender, RoutedEventArgs e)
         {
@@ -107,5 +111,12 @@ namespace idk_what_this_is
             if (gameOneScore > gameTwoScore && gameOneScore > gameThreeScore) {TopGame.Text = "Game One!";} else if (gameTwoScore > gameOneScore && gameTwoScore > gameThreeScore) { TopGame.Text = "Game Two!"; } else if (gameThreeScore > gameOneScore && gameThreeScore > gameTwoScore) { TopGame.Text = "Game Three!"; } else { TopGame.Text = "It's a tie!"; }
         }
 
+
+        public void textFile()
+        {
+            // Fix average score, handicap and add a top score (find new way to do a FindHigh).
+            string playerInfo = $"Your name is {User_Name}. Your average score was {AverageScore.ToString()}. Your gender is {Gender}. The handicap you got is {Handicap}.";
+            File.WriteAllText("Scores.txt", playerInfo);
+        }
     }
 }
